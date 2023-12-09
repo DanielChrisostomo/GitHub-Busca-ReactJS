@@ -7,7 +7,7 @@ const Loading = styled.div`
   justify-content: center;
   width: 3.5rem;
   height: 3.5rem;
-  border: 5px solid rgba(111, 86, 255, 1) 96%;
+  border: 5px solid rgb(90, 120, 255);
   border-bottom-color: transparent;
   border-radius: 50%;
   box-sizing: border-box;

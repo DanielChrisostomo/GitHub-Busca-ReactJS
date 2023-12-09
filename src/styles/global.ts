@@ -33,4 +33,23 @@ a {
   text-decoration: none;
   color: white;
 }
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background:#000000;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background:#fff4dd;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: white,
+;
+}
 `

@@ -2,8 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useParams, Link } from 'react-router-dom';
-import { GitHubUser, Repo } from '../Interfaces/interface';
+import { Repo } from '../Interfaces/interface';
 import UserCard from './CardSection';
+import { GitHubUser } from '../Interfaces/interface';
 
 const Maindiv = styled.main`
   max-width: 100vw;
@@ -88,6 +89,10 @@ const Pspan = styled.span`
   -webkit-box-orient: vertical;
 `;
 
+const DadoSpan = styled(Pspan)`
+  color: white;
+`;
+
 const Btn = styled.button`
   border: none;
   outline: none;
@@ -120,10 +125,10 @@ const Perfil: React.FC = () => {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<Error | null>(null);
   const [dadosRepo, setDadosRepo] = React.useState<Repo[] | null>(null);
-  const [page, setPage] = React.useState<number>(1);
+  // const [page, setPage] = React.useState<number>(1);
 
   const url = `https://api.github.com/users/${id}`;
-  const urlRep = `https://api.github.com/users/${id}/repos?page=${page}`;
+  // const urlRep = `https://api.github.com/users/${id}/repos?page=${page}`;
 
   React.useEffect(() => {
     async function request() {
@@ -149,21 +154,47 @@ const Perfil: React.FC = () => {
             </Div1>
             <Div2>
               <Paragrafo>
-                Nome <Pspan>{dados.name}</Pspan>
+                {dados.name === null ? (
+                  <DadoSpan>Nome não informado</DadoSpan>
+                ) : (
+                  <>
+                    <DadoSpan>Nome</DadoSpan> <Pspan>{dados.name}</Pspan>
+                  </>
+                )}
               </Paragrafo>
               <Paragrafo>
-                Usuário <Pspan>{dados.login}</Pspan>
+                {dados.login === null ? (
+                  <DadoSpan>Usuário não informado</DadoSpan>
+                ) : (
+                  <>
+                    <DadoSpan>Usuário</DadoSpan> <Pspan>{dados.login}</Pspan>
+                  </>
+                )}
               </Paragrafo>
               <Paragrafo>
-                Localização <Pspan>{dados.location}</Pspan>
+                {dados.location === null ? (
+                  <DadoSpan>Localização não informada</DadoSpan>
+                ) : (
+                  <>
+                    <DadoSpan>Localização</DadoSpan>{' '}
+                    <Pspan>{dados.location}</Pspan>
+                  </>
+                )}
               </Paragrafo>
             </Div2>
             <Div2>
               <Paragrafo>
-                Id <Pspan>{dados.id}</Pspan>
+                <DadoSpan>Id</DadoSpan> <Pspan>{dados.id}</Pspan>
               </Paragrafo>
               <Paragrafo>
-                Seguidores <Pspan>{dados.followers}</Pspan>
+                {dados.followers === null ? (
+                  <DadoSpan>Seguidores não informado</DadoSpan>
+                ) : (
+                  <>
+                    <DadoSpan>Seguidores</DadoSpan>{' '}
+                    <Pspan>{dados.followers}</Pspan>
+                  </>
+                )}
               </Paragrafo>
               <Paragrafo>
                 Total de repositórios <Pspan>{dados.public_repos}</Pspan>

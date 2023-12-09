@@ -135,3 +135,11 @@ export interface Repo {
   watchers: number;
   default_branch: string;
 }
+
+export interface UserData {
+  nome: string | null;
+  avatar: string | null;
+  login: string | null;
+  location: string | null; 
+  id: number;
+}

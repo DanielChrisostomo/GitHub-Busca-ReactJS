@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { GitHubUser, Repo } from '../Interfaces/interface';
+import Loader from '../Helper/Loader';
+import moment from 'moment';
 
 const SectionRepos = styled.section`
   background: black;
@@ -26,7 +28,7 @@ const DivTitulo = styled.div`
   padding-bottom: 6rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   max-width: 60vw;
   margin: 0 auto;
 `;
@@ -44,6 +46,7 @@ const Btn = styled.button`
   box-shadow: 0px 5px 0px 0px #a29bfe;
   transition: 300ms;
   cursor: pointer;
+  margin: 0 auto;
   &:active {
     transform: translateY(5px);
     box-shadow: 0px 0px 0px 0px #a29bfe;
@@ -143,11 +146,17 @@ const ListItem = styled.li`
   }
 `;
 
+const BtnDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+`;
+
 const UserCard = () => {
   const { id } = useParams();
   const [dados, setDados] = React.useState<GitHubUser | null>(null);
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<Error | null>(null);
   const [dadosRepo, setDadosRepo] = React.useState<Repo[] | null>(null);
   const [page, setPage] = React.useState<number>(1);
 
@@ -165,39 +174,46 @@ const UserCard = () => {
 
   React.useEffect(() => {
     async function requestRepos() {
-      const response = await axios.get(urlRep);
-      const json = await response.data;
-      setDadosRepo(json);
+      try {
+        setLoading(true);
+        const response = await axios.get(urlRep);
+        const json = await response.data;
+        if (dadosRepo === null) {
+          setDadosRepo(json);
+        } else setDadosRepo([...dadosRepo, ...json]);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
     }
     requestRepos();
-  }, [page, urlRep]);
+  }, [page]);
 
-  const handleNext = () => {
-    if (dadosRepo && dadosRepo.length < 30) {
-      return null;
-    } else {
-      setPage((prevPage) => prevPage + 1);
-    }
-  };
-
-  function handlePrev() {
-    if (page <= 1) {
-      return null;
-    } else {
-      setPage((page) => page - 1);
-    }
+  function handleNext() {
+    axios.get(urlRep).then((res) => {
+      if (res && res.data.length < 30) {
+        return null;
+      } else {
+        setPage((prevPage) => prevPage + 1);
+      }
+    });
   }
+
+  // dadosRepo?.map((dado, index)=>{
+  //   const x = dado.created_at;
+  //   const y = dado.updated_at;
+  //   x.moment().format('lll');  // Dec 9, 2023 6:34 PM
+  // })
 
   return (
     <>
       {dados === null ? null : (
         <SectionRepos>
           <DivTitulo>
-            <Btn onClick={handlePrev}>Anteriores</Btn>
             <h1>
-              Repositórios de <Pspan>{dados.name}</Pspan>
+              Repositórios de <Pspan>{dados.login}</Pspan>
             </h1>
-            <Btn onClick={handleNext}>Próximos</Btn>
           </DivTitulo>
           <ArticleRepos>
             {dadosRepo === null
@@ -213,10 +229,16 @@ const UserCard = () => {
                           Linguagem <Pspan>{repos.language}</Pspan>
                         </ListItem>
                         <ListItem>
-                          Data de Criação <Pspan>{repos.created_at}</Pspan>
+                          Data de Criação{' '}
+                          <Pspan>
+                            {moment(repos.created_at).format('lll')}
+                          </Pspan>
                         </ListItem>
                         <ListItem>
-                          Último update <Pspan>{repos.updated_at}</Pspan>
+                          Último update{' '}
+                          <Pspan>
+                            {moment(repos.updated_at).format('lll')}
+                          </Pspan>
                         </ListItem>
                         <ListItem>
                           Descrição <Pspan>{repos.description}</Pspan>
@@ -230,6 +252,10 @@ const UserCard = () => {
                   </Card>
                 ))}
           </ArticleRepos>
+          {loading && <Loader />}
+          <BtnDiv>
+            <Btn onClick={handleNext}>Próximos</Btn>
+          </BtnDiv>
         </SectionRepos>
       )}
     </>

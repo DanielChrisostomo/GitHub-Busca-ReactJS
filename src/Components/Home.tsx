@@ -4,8 +4,9 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ReactComponent as GitHub } from '../../img/github.svg';
 import { ReactComponent as Search } from '../../img/search.svg';
-import { GitHubUser } from '../Interfaces/interface';
+import { ReactComponent as Arrow } from '../../img/arrow.svg';
 import Loader from '../Helper/Loader';
+import { GitHubUser, UserData } from '../Interfaces/interface';
 
 const Maincontainer = styled.main`
   display: grid;
@@ -17,8 +18,23 @@ const Menu = styled.aside`
   background-color: black;
   width: 100%;
   height: 100%;
+  padding: 0 1.5rem;
   position: relative;
-  &::after {
+  overflow: auto;
+`;
+const MenuTitulo = styled.h2`
+  font-size: 1.25rem;
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  color: rgb(245, 245, 245);
+`;
+const ContainerBusca = styled.div`
+  background-color: #fff4dd;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  &::before {
     content: '';
     background: linear-gradient(
       135deg,
@@ -30,20 +46,9 @@ const Menu = styled.aside`
     width: 6px;
     height: 100vh;
     position: absolute;
-    right: 0;
+    left: 0;
     top: 0;
   }
-`;
-const MenuTitulo = styled.h2`
-  font-size: 1.25rem;
-  text-align: center;
-  margin-top: 2rem;
-  color: rgb(245, 245, 245);
-`;
-const ContainerBusca = styled.div`
-  background-color: #fff4dd;
-  width: 100%;
-  height: 100%;
 `;
 const Titulo = styled.h1`
   font-size: 2rem;
@@ -126,14 +131,14 @@ const Button = styled.button`
   border-radius: 0 10px 10px 0;
   background: transparent;
   position: absolute;
-  background: rgba(150, 86, 255, 1) 96%;
+  background: rgba(111, 86, 255, 1);
   border: 2px solid transparent;
   box-sizing: border-box;
   cursor: pointer;
   transition: 300ms;
   right: 0;
   &:hover {
-    background: rgba(111, 86, 255, 1) 96%;
+    background: rgba(150, 86, 255, 1);
   }
 `;
 const Perror = styled.p`
@@ -143,14 +148,73 @@ const Perror = styled.p`
   margin: 0.5rem;
 `;
 
+const Nomecard = styled.p`
+  color: white;
+`;
+
+const LoCard = styled.p`
+  font-size: 13px;
+  transition: 300ms;
+  color: #ffffff80;
+`;
+
+const ImgCard = styled.img`
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  transition: ease-in 300ms;
+  &:hover {
+    border-radius: none;
+  }
+`;
+
+const Card = styled.div`
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ffffff80;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  transition: ease-in 100ms;
+  background: #111;
+  &:hover {
+    border-color: white;
+    color: white;
+  }
+`;
+
 const Home: React.FC = () => {
   const [value, setValue] = React.useState<string>('');
   const [dados, setDados] = React.useState<null | GitHubUser>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<boolean | null>(null);
-  const [dataSearch, setDataSearch] = React.useState<string | null>(null);
+  const [dataSearch, setDataSearch] = React.useState<UserData[]>([]);
 
   const url = `https://api.github.com/users/${value}`;
+
+  React.useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    setDataSearch(storedUser ? JSON.parse(storedUser) : []);
+  }, []);
+
+  React.useEffect(() => {
+    if (dados !== null) {
+      const dataUser = {
+        nome: dados.name,
+        avatar: dados.avatar_url,
+        login: dados.login,
+        location: dados.location,
+        id: dados.id,
+      };
+      const storedNamesString = localStorage.getItem('user');
+      const storedNames = storedNamesString
+        ? JSON.parse(storedNamesString)
+        : [];
+      storedNames.push(dataUser);
+      localStorage.setItem('user', JSON.stringify(storedNames));
+      setDataSearch(storedNames);
+    }
+  }, [dados]);
 
   async function require(event: React.MouseEvent) {
     event.preventDefault();
@@ -161,10 +225,14 @@ const Home: React.FC = () => {
         const json = await response.data;
         setDados(json);
         setError(false);
-      } catch (err: any) {
-        console.log(err);
-        setError(true);
-        throw new Error(err.message);
+      } catch (err) {
+        if (err instanceof Error) {
+          console.log(err.message);
+          setError(true);
+          throw new Error(err.message);
+        } else {
+          console.log('Um erro desconhecido ocorreu:', err);
+        }
       } finally {
         setLoading(false);
       }
@@ -180,8 +248,42 @@ const Home: React.FC = () => {
       <Maincontainer>
         <Menu>
           <MenuTitulo>Últimas Pesquisas</MenuTitulo>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column-reverse',
+            }}
+          >
+            {dataSearch !== null
+              ? dataSearch.map((data: UserData, index: number) => (
+                  <Link key={index} to={`/perfil/${data.login}`}>
+                    <Card>
+                      <div>
+                        <ImgCard
+                          src={data.avatar ?? undefined}
+                          alt="Foto Perfil"
+                        />
+                      </div>
+                      <div style={{ marginLeft: '1rem', flex: 1 }}>
+                        <Nomecard>
+                          {data.login ? data.login : 'Login não informado'}
+                        </Nomecard>
+                        <LoCard>
+                          {data.location
+                            ? data.location
+                            : 'Localização não informada'}
+                        </LoCard>
+                        <LoCard>
+                          {data.nome ? data.nome : 'Nome não informado'}
+                        </LoCard>
+                      </div>
+                      <Arrow />
+                    </Card>
+                  </Link>
+                ))
+              : null}
+          </div>
         </Menu>
-
         <ContainerBusca>
           <Titulo>Hubusca</Titulo>
           {dados === null || error ? (
