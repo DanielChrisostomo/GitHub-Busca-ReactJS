@@ -23,7 +23,7 @@ const Maindiv = styled.main`
 `;
 const DadosContainer = styled.section`
   display: grid;
-  grid-template-columns: 1fr 0.5fr 0.5fr;
+  grid-template-columns: 1fr 1fr;
   justify-content: center;
   padding: 4rem 1rem 4rem 10rem;
   gap: 4rem;
@@ -36,12 +36,10 @@ const DadosContainer = styled.section`
   max-width: 100vw;
   position: relative;
   @media (max-width: 1000px) {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     padding: 6rem 0 0 0;
     width: 100vw;
+    display: flex;
+    flex-direction: column;
   }
 `;
 const Div1 = styled.div`
@@ -65,16 +63,16 @@ const Imagem = styled.img`
   }
 `;
 const Div2 = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: first baseline;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   text-align: justify;
   gap: 25px;
   padding: 2rem 0;
   @media (max-width: 1000px) {
     justify-content: center;
     align-items: center;
-    padding: 0;
+    padding: 0 0.5rem;
+    margin-left: 2rem;
   }
 `;
 const Paragrafo = styled.p`
@@ -95,6 +93,9 @@ const Paragrafo = styled.p`
   }
   &:hover::before {
     left: -20px;
+  }
+  @media (max-width: 1000px) {
+    font-size: 1rem;
   }
 `;
 const Pspan = styled.span`
@@ -198,8 +199,6 @@ const Perfil: React.FC = () => {
                   </>
                 )}
               </Paragrafo>
-            </Div2>
-            <Div2>
               <Paragrafo>
                 <DadoSpan>Id</DadoSpan> <Pspan>{dados.id}</Pspan>
               </Paragrafo>
