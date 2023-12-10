@@ -13,6 +13,10 @@ const Maincontainer = styled.main`
   grid-template-columns: 0.8fr 2fr;
   height: 100vh;
   width: 100vw;
+  @media (max-width: 1000px) {
+    display: flex;
+    flex-direction: column-reverse;
+  }
 `;
 const Menu = styled.aside`
   background-color: black;
@@ -21,6 +25,9 @@ const Menu = styled.aside`
   padding: 0 1.5rem;
   position: relative;
   overflow: auto;
+  @media (max-width: 1000px) {
+    height: 400px;
+  }
 `;
 const MenuTitulo = styled.h2`
   font-size: 1.25rem;
@@ -28,6 +35,10 @@ const MenuTitulo = styled.h2`
   margin-top: 2rem;
   margin-bottom: 2rem;
   color: rgb(245, 245, 245);
+  @media (max-width: 1000px) {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
 `;
 const ContainerBusca = styled.div`
   background-color: #fff4dd;
@@ -49,11 +60,23 @@ const ContainerBusca = styled.div`
     left: 0;
     top: 0;
   }
+  @media (max-width: 1000px) {
+    &::before {
+      width: 100vw;
+      height: 6px;
+      bottom: 0;
+      top: unset;
+      left: unset;
+    }
+  }
 `;
 const Titulo = styled.h1`
   font-size: 2rem;
   text-align: center;
   margin: 2rem 0rem;
+  @media (max-width: 1000px) {
+    margin: 1rem 0rem;
+  }
 `;
 const DadosContainer = styled.div`
   display: flex;
@@ -64,12 +87,15 @@ const DadosContainer = styled.div`
   gap: 15px;
   opacity: 0;
   transform: translateY(-30px);
-  animation: leftDown 500ms forwards;
+  animation: leftDown 400ms forwards;
   @keyframes leftDown {
     to {
       opacity: initial;
       transform: initial;
     }
+  }
+  @media (max-width: 1000px) {
+    height: auto;
   }
 `;
 const Imagem = styled.img`
@@ -89,6 +115,10 @@ const Imagem = styled.img`
   &:hover {
     scale: 1.05;
   }
+  @media (max-width: 1000px) {
+    max-width: 200px;
+    max-height: 200px;
+  }
 `;
 const Formulario = styled.form`
   display: flex;
@@ -100,6 +130,12 @@ const Formulario = styled.form`
   transition: all 300ms ease 0s;
   &:hover {
     transform: translateY(-7px);
+  }
+  @media (max-width: 1000px) {
+    margin-top: 3.5rem;
+    width: 70vw;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
 `;
 const Input = styled.input`
@@ -121,6 +157,9 @@ const Input = styled.input`
   font-size: 1rem;
   &:placeholder-shown {
     text-align: center;
+  }
+  @media (max-width: 1000px) {
+    width: 70vw;
   }
 `;
 const Button = styled.button`
@@ -147,17 +186,14 @@ const Perror = styled.p`
   color: red;
   margin: 0.5rem;
 `;
-
 const Nomecard = styled.p`
   color: white;
 `;
-
 const LoCard = styled.p`
   font-size: 13px;
   transition: 300ms;
   color: #ffffff80;
 `;
-
 const ImgCard = styled.img`
   height: 50px;
   width: 50px;
@@ -167,7 +203,6 @@ const ImgCard = styled.img`
     border-radius: none;
   }
 `;
-
 const Card = styled.div`
   padding: 0.5rem;
   margin-bottom: 1rem;

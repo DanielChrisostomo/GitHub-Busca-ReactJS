@@ -85,6 +85,13 @@ const Card = styled.div`
   &:hover {
     box-shadow: 0px 0px 30px 1px rgba(111, 120, 255, 0.3);
   }
+  @media (max-width: 1000px) {
+    width: 300px;
+    height: 300px;
+    &:hover {
+      box-shadow: 0px 0px 50px 1px rgba(111, 120, 255, 0.3);
+    }
+  }
 `;
 const UList = styled.ul`
   position: relative;
@@ -107,6 +114,10 @@ const UList = styled.ul`
   &:hover {
     transform: scale(0.98);
     border-radius: 20px;
+  }
+  @media (max-width: 1000px) {
+    width: 300px;
+    height: 300px;
   }
 `;
 const Imagem = styled.img`
@@ -143,6 +154,9 @@ const ListItem = styled.li`
     position: absolute;
     left: -20px;
     top: 7px;
+    @media (max-width: 1000px) {
+      font-size: 13px;
+    }
   }
 `;
 

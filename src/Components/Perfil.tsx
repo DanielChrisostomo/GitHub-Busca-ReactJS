@@ -35,6 +35,14 @@ const DadosContainer = styled.section`
   );
   max-width: 100vw;
   position: relative;
+  @media (max-width: 1000px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 6rem 0 0 0;
+    width: 100vw;
+  }
 `;
 const Div1 = styled.div`
   display: flex;
@@ -51,6 +59,10 @@ const Imagem = styled.img`
   &:hover {
     scale: 1.05;
   }
+  @media (max-width: 1000px) {
+    max-width: 200px;
+    max-height: 200px;
+  }
 `;
 const Div2 = styled.div`
   display: flex;
@@ -59,6 +71,11 @@ const Div2 = styled.div`
   text-align: justify;
   gap: 25px;
   padding: 2rem 0;
+  @media (max-width: 1000px) {
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+  }
 `;
 const Paragrafo = styled.p`
   font-size: 1.25rem;
