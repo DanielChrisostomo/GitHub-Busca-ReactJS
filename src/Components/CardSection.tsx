@@ -214,12 +214,6 @@ const UserCard = () => {
     });
   }
 
-  // dadosRepo?.map((dado, index)=>{
-  //   const x = dado.created_at;
-  //   const y = dado.updated_at;
-  //   x.moment().format('lll');  // Dec 9, 2023 6:34 PM
-  // })
-
   return (
     <>
       {dados === null ? null : (
@@ -268,7 +262,7 @@ const UserCard = () => {
           </ArticleRepos>
           {loading && <Loader />}
           <BtnDiv>
-            <Btn onClick={handleNext}>Próximos</Btn>
+            <Btn onClick={handleNext}>Mais Repositórios</Btn>
           </BtnDiv>
         </SectionRepos>
       )}

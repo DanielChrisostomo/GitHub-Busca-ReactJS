@@ -216,6 +216,15 @@ const Card = styled.div`
     border-color: white;
     color: white;
   }
+  animation: leftUp ease-in 300ms forwards;
+  transform: translateX(-30px);
+  animation: leftUp ease-in 300ms forwards;
+  @keyframes leftUp {
+    to {
+      opacity: initial;
+      transform: initial;
+    }
+  }
 `;
 
 const Home: React.FC = () => {

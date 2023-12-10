@@ -143,10 +143,8 @@ const Perfil: React.FC = () => {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<Error | null>(null);
   const [dadosRepo, setDadosRepo] = React.useState<Repo[] | null>(null);
-  // const [page, setPage] = React.useState<number>(1);
 
   const url = `https://api.github.com/users/${id}`;
-  // const urlRep = `https://api.github.com/users/${id}/repos?page=${page}`;
 
   React.useEffect(() => {
     async function request() {
